@@ -192,16 +192,14 @@ RuACT assigns a role according to a rubric's pass rate within the current rollou
 
 For a batch $\mathcal{B}$ of $Q$ query groups, RuACT combines the Critic-refined GRPO loss with gated Teacher distillation:
 
-$$
+```math
 \begin{aligned}
 \mathcal{L}_{\mathrm{RuACT}}(\theta)
-&= \mathcal{L}_{\mathrm{GRPO}}(\theta; R')
-+ \frac{\beta}{Q}\sum_{x\in\mathcal{B}}\ell_{\mathrm{distill}}(x), \\
+&= \mathcal{L}_{\mathrm{GRPO}}(\theta; R') + \frac{\beta}{Q}\sum_{x\in\mathcal{B}}\ell_{\mathrm{distill}}(x), \\
 \ell_{\mathrm{distill}}(x)
-&= \frac{a_x}{|\mathcal{M}_x|}
-\sum_{t\in\mathcal{M}_x}D_{\mathrm{KL}}(q_t\Vert p_t).
+&= \frac{a_x}{|\mathcal{M}_x|}\sum_{t\in\mathcal{M}_x}D_{\mathrm{KL}}(q_t\Vert p_t).
 \end{aligned}
-$$
+```
 
 Here, $R'$ uses the refined rubric rewards, and $\mathcal{M}_x$ contains the valid supervised token positions. The detached teacher distribution $q_t$ sees privileged rubric guidance; the student distribution $p_t$ sees the original query. Both use prefixes of the highest-reward ordinary response. The gate $a_x$ is one only when the guided response scores higher than every ordinary rollout; otherwise, the group receives only the GRPO update. Refinement preserves each parent family's weight, allocating a fraction $\lambda$ to its retained children.
 
