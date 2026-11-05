@@ -45,28 +45,71 @@
   "tables": {
     "checkpoint_scores.csv": {
       "table": 1,
-      "page": 6
+      "page": 6,
+      "verification": {
+        "rows": 16,
+        "numeric_cells": 150,
+        "status": "all values match the PDF table"
+      }
     },
     "critic_alignment.csv": {
       "table": 2,
-      "page": 6
+      "page": 6,
+      "verification": {
+        "rows": 3,
+        "numeric_cells": 6,
+        "status": "all values match the PDF table"
+      }
     },
     "optimization_scores.csv": {
       "table": 3,
-      "page": 7
+      "page": 7,
+      "verification": {
+        "rows": 6,
+        "numeric_cells": 33,
+        "status": "all values match the PDF table"
+      }
     },
     "ood_scores.csv": {
       "table": 4,
-      "page": 7
+      "page": 7,
+      "verification": {
+        "rows": 4,
+        "numeric_cells": 16,
+        "status": "all values match the PDF table"
+      }
     },
     "ablation_scores.csv": {
       "table": 5,
-      "page": 8
+      "page": 8,
+      "verification": {
+        "rows": 5,
+        "numeric_cells": 15,
+        "status": "all values match the PDF table"
+      }
     },
     "critic_case.json": {
       "table": 10,
-      "page": 20
+      "page": 20,
+      "verification": {
+        "responses": 8,
+        "binary_verdicts": 32,
+        "pass_counts": [
+          8,
+          2,
+          4,
+          4
+        ],
+        "status": "criteria, excerpts, verdicts and counts match the PDF table"
+      }
     }
   },
-  "figure_handling": "Direct page-region rasterization; no redrawing, curve fitting, or replacement data."
+  "figure_handling": "Direct page-region rasterization; no redrawing, curve fitting, or replacement data.",
+  "result_authority": "The identified author-provided paper PDF is the sole authority for reported results; archived logs and earlier drafts cannot override it.",
+  "verification": {
+    "csv_numeric_cells": 220,
+    "figure_check": "Each image is byte-identical to a fresh crop from the identified PDF using the recorded coordinates.",
+    "analysis_text": "Percentages and cohort sizes match Section 4.3. Differences of 3.03, 0.54 and 0.39 percentage points are computed from Tables 2 and 5.",
+    "readme_display": "Absolute table scores are preserved; gain annotations are omitted."
+  }
 }

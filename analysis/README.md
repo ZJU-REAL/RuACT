@@ -1,6 +1,6 @@
 # Paper results and analysis
 
-The README reproduces the author-provided paper's tables and original analysis figures. These files record the reported results; preparing them does not rerun training or evaluation.
+The author-provided paper PDF is the sole authority for every reported result in the README and this directory. Tables reproduce its values and precision; figures are direct excerpts. Archived experiment logs and earlier drafts must not replace the paper's final results.
 
 ## Table data
 
@@ -26,3 +26,9 @@ Benchmark scores are percentages unless noted otherwise. MT-Bench uses a 0-10 sc
 The figures are cropped directly from the paper at 300 dpi. No curves were reconstructed from images, and no tables were converted into bar charts. The source PDF hash, page numbers, crop coordinates and image hashes are in [paper_sources.json](data/paper_sources.json). The main-table transcription scope is recorded in [main_table_source.json](data/main_table_source.json).
 
 The public package contains the figure excerpts and transcribed table data, not the complete underlying per-response logs for these analyses. Use [evaluation/](../evaluation/) to evaluate newly trained checkpoints.
+
+## Verified correspondence
+
+All 220 numeric entries in the CSV files, including the paper's reported gains, match Tables 1-5. The README displays the same scores with gain annotations omitted. The Critic case matches all 32 binary verdicts, the four pass counts, the criterion wording, and the eight response excerpts in Table 10. Figures 4-6 are byte-identical to fresh crops from the recorded PDF regions. Analysis percentages and cohort sizes are checked against Section 4.3; arithmetic differences are derived only from the paper's values.
+
+The PDF identity and per-table verification counts are recorded in [paper_sources.json](data/paper_sources.json). New evaluation outputs belong to their own run records and do not update these reported paper results.

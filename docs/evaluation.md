@@ -37,4 +37,4 @@ Scoring uses the frozen responses without new generation. Every rubric is indepe
 
 The score summary preserves the rollout's actual generation settings. The final metric report identifies its weights and hashes. Judge request retries and response parsing failures are distinct from model rollout truncation. An empty final answer is explicitly recorded with no judge call. A failed API call must not be interpreted as successful zero scoring.
 
-The released figure tables preserve the metrics of their historical evaluation records. Some used distinct aggregation or output-acceptance settings; see `analysis/README.md`. Running these commands is a new evaluation under the declared current protocol, not an assertion that every archived score was produced by this exact consolidated entrypoint.
+The reported results in the README and `analysis/` follow the author-provided paper PDF exclusively. Their table and figure sources are listed in [analysis/README.md](../analysis/README.md). Running these commands produces a new evaluation record; neither new outputs nor archived experiment logs replace the paper's final values.
