@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+outputs/
+*.local.json
+.env
+.env.*
+*.log
+wandb/
+*.egg-info/
+build/
+dist/
