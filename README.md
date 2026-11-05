@@ -16,7 +16,7 @@ Rubric-based reinforcement learning scores responses against query-specific requ
 
 ## News
 
-- Training and evaluation code, experiment configurations, and paper results are available in this repository.
+- **Nov 2026** — Code released.
 
 ## Highlights
 
@@ -27,32 +27,51 @@ Rubric-based reinforcement learning scores responses against query-specific requ
 
 ## Results
 
-**Table 1.** Results from the paper's main table, in percent; higher is better. Medicine and Science use separate training runs. Except for the external OPSD* reference, evaluation uses DeepSeek-V4.1-Flash.
+**Table 1.** Results from the paper's main table, in percent; higher is better. Medicine and Science use separate training runs.
 
 | Model | Group | Method | RaR-Medicine | HealthBench | RaR-Science | ResearchQA | Avg. |
 |---|---|---|---:|---:|---:|---:|---:|
-| Qwen3-1.7B | Vanilla | Base | 38.57 <sub>↑0.00</sub> | 23.18 <sub>↑0.00</sub> | 52.56 <sub>↑0.00</sub> | 50.51 <sub>↑0.00</sub> | 41.21 <sub>↑0.00</sub> |
-| Qwen3-1.7B | Baselines | GRPO | 43.26 <sub>↑4.69</sub> | 26.45 <sub>↑3.27</sub> | 55.67 <sub>↑3.11</sub> | 54.79 <sub>↑4.28</sub> | 45.04 <sub>↑3.84</sub> |
-| Qwen3-1.7B | Baselines | Reweight | 42.60 <sub>↑4.03</sub> | 25.61 <sub>↑2.43</sub> | 56.77 <sub>↑4.21</sub> | 56.11 <sub>↑5.60</sub> | 45.27 <sub>↑4.07</sub> |
-| Qwen3-1.7B | Baselines | RuscaRL | <ins>43.39</ins> <sub>↑4.82</sub> | 23.95 <sub>↑0.77</sub> | 56.41 <sub>↑3.85</sub> | **59.37** <sub>↑8.86</sub> | 45.78 <sub>↑4.58</sub> |
+| Qwen3-1.7B | Vanilla | Base | 38.57 | 23.18 | 52.56 | 50.51 | 41.21 |
+| Qwen3-1.7B | Baselines | GRPO | 43.26 | 26.45 | 55.67 | 54.79 | 45.04 |
+| Qwen3-1.7B | Baselines | Reweight | 42.60 | 25.61 | 56.77 | 56.11 | 45.27 |
+| Qwen3-1.7B | Baselines | RuscaRL | <ins>43.39</ins> | 23.95 | 56.41 | **59.37** | 45.78 |
 | Qwen3-1.7B | Baselines | OPSD\* | 26.30 | 38.50 | 39.60 | 38.40 | 35.70 |
-| Qwen3-1.7B | Ours | RuACT-Teacher | **43.82** <sub>↑5.25</sub> | 25.16 <sub>↑1.98</sub> | <ins>58.42</ins> <sub>↑5.86</sub> | 57.76 <sub>↑7.25</sub> | 46.29 <sub>↑5.09</sub> |
-| Qwen3-1.7B | Ours | RuACT-Critic | 43.24 <sub>↑4.67</sub> | **27.97** <sub>↑4.79</sub> | 58.16 <sub>↑5.60</sub> | 58.55 <sub>↑8.04</sub> | <ins>46.98</ins> <sub>↑5.77</sub> |
-| Qwen3-1.7B | Ours | **RuACT** | 43.35 <sub>↑4.78</sub> | <ins>27.83</ins> <sub>↑4.65</sub> | **58.83** <sub>↑6.27</sub> | <ins>58.65</ins> <sub>↑8.14</sub> | **47.17** <sub>↑5.96</sub> |
-| Qwen3-4B | Vanilla | Base | 50.38 <sub>↑0.00</sub> | 35.45 <sub>↑0.00</sub> | 66.16 <sub>↑0.00</sub> | 59.16 <sub>↑0.00</sub> | 52.79 <sub>↑0.00</sub> |
-| Qwen3-4B | Baselines | GRPO | 53.55 <sub>↑3.17</sub> | 37.62 <sub>↑2.17</sub> | 70.08 <sub>↑3.92</sub> | 64.82 <sub>↑5.66</sub> | 56.52 <sub>↑3.73</sub> |
-| Qwen3-4B | Baselines | Reweight | 55.34 <sub>↑4.96</sub> | 38.46 <sub>↑3.01</sub> | 70.28 <sub>↑4.12</sub> | 65.02 <sub>↑5.86</sub> | 57.28 <sub>↑4.49</sub> |
-| Qwen3-4B | Baselines | RuscaRL | 55.36 <sub>↑4.98</sub> | 37.10 <sub>↑1.65</sub> | 69.38 <sub>↑3.22</sub> | 65.33 <sub>↑6.17</sub> | 56.79 <sub>↑4.01</sub> |
+| Qwen3-1.7B | Ours | RuACT-Teacher | **43.82** | 25.16 | <ins>58.42</ins> | 57.76 | 46.29 |
+| Qwen3-1.7B | Ours | RuACT-Critic | 43.24 | **27.97** | 58.16 | 58.55 | <ins>46.98</ins> |
+| Qwen3-1.7B | Ours | **RuACT** | 43.35 | <ins>27.83</ins> | **58.83** | <ins>58.65</ins> | **47.17** |
+| Qwen3-4B | Vanilla | Base | 50.38 | 35.45 | 66.16 | 59.16 | 52.79 |
+| Qwen3-4B | Baselines | GRPO | 53.55 | 37.62 | 70.08 | 64.82 | 56.52 |
+| Qwen3-4B | Baselines | Reweight | 55.34 | 38.46 | 70.28 | 65.02 | 57.28 |
+| Qwen3-4B | Baselines | RuscaRL | 55.36 | 37.10 | 69.38 | 65.33 | 56.79 |
 | Qwen3-4B | Baselines | OPSD\* | 42.00 | 42.10 | 38.30 | 45.20 | 41.90 |
-| Qwen3-4B | Ours | RuACT-Teacher | 55.15 <sub>↑4.77</sub> | 38.57 <sub>↑3.12</sub> | <ins>70.53</ins> <sub>↑4.37</sub> | <ins>66.12</ins> <sub>↑6.96</sub> | <ins>57.59</ins> <sub>↑4.81</sub> |
-| Qwen3-4B | Ours | RuACT-Critic | <ins>55.50</ins> <sub>↑5.12</sub> | <ins>38.77</ins> <sub>↑3.32</sub> | 70.47 <sub>↑4.31</sub> | 64.62 <sub>↑5.46</sub> | 57.34 <sub>↑4.55</sub> |
-| Qwen3-4B | Ours | **RuACT** | **56.34** <sub>↑5.96</sub> | **40.12** <sub>↑4.67</sub> | **70.59** <sub>↑4.43</sub> | **69.44** <sub>↑10.28</sub> | **59.12** <sub>↑6.34</sub> |
+| Qwen3-4B | Ours | RuACT-Teacher | 55.15 | 38.57 | <ins>70.53</ins> | <ins>66.12</ins> | <ins>57.59</ins> |
+| Qwen3-4B | Ours | RuACT-Critic | <ins>55.50</ins> | <ins>38.77</ins> | 70.47 | 64.62 | 57.34 |
+| Qwen3-4B | Ours | **RuACT** | **56.34** | **40.12** | **70.59** | **69.44** | **59.12** |
 
-Avg. is the unweighted mean of the four benchmark scores. Arrows show absolute gains over the corresponding base model, in percentage points. Scores and gains reproduce the paper at its reported precision. **Bold** and <ins>underlined</ins> scores mark the best and second-best matched results within each model scale.
+Avg. is the unweighted mean of the four benchmark scores. Scores reproduce the paper at its reported precision. **Bold** and <ins>underlined</ins> scores mark the best and second-best matched results within each model scale.
 
-OPSD* is an external reference quoted from CriPO, which uses filtered RaR splits and GPT-4o-mini as its evaluation judge. It is excluded from matched-result highlighting and gain annotations. It is distinct from the GRPO-OPSD analysis recipe in this repository.
+OPSD* is an external reference quoted from CriPO, which uses filtered RaR splits and GPT-4o-mini as its evaluation judge. It is excluded from matched-result highlighting. It is distinct from the GRPO-OPSD analysis recipe in this repository.
 
 [Table data](analysis/data/checkpoint_scores.csv) · [Source and analysis notes](analysis/README.md)
+
+### Evaluation protocol
+
+The paper uses separate models for training judgments, child-rubric proposals, and evaluation.
+
+| Role | Model | Protocol |
+|---|---|---|
+| Training rubric judge | **Qwen3-32B** | Binary judgments for original and child rubrics. |
+| Child-rubric proposal model | **Qwen3.6-35B-A3B** | Proposals from the query and parent rubric; five initial candidates and at most one additional round. |
+| Main benchmark judge | **DeepSeek-V4.1-Flash** | Score frozen responses on RaR-Medicine, HealthBench, RaR-Science, and ResearchQA. |
+| Judge-robustness evaluation | **Qwen3.7-Max** | Rescore the same frozen responses with a second judge. |
+| General-capability evaluation | **Qwen3-Max** | MT-Bench and FollowBench protocols. |
+
+| Policy sampling | Responses per query | Temperature | Top-p | Max response tokens | Seed |
+|---|---:|---:|---:|---:|---:|
+| Training | 8 | 1.0 | 1.0 | 4,096 | 42 |
+| Main benchmark evaluation | 1 | 0.70 | 0.80 | 4,096 | 42 |
+
+Thinking and top-k filtering are disabled in both sampling settings. Evaluation responses are generated once and reused across judges. Rubric scores use the explicit signed weights; HealthBench divides signed rubric points by total positive weight. Aggregation is fixed across methods within each benchmark. Training budgets and sequence limits are listed under [Shared defaults](#shared-defaults); runnable scoring commands are in the [evaluation guide](docs/evaluation.md).
 
 ## Analysis
 
@@ -92,16 +111,16 @@ Matched children improve alignment by **3.03 points**. Shuffling raises coverage
 
 ### Alternative optimization strategies
 
-**Table 3.** Qwen3-4B on Medicine. Scores are percentages; arrows report gains over Base.
+**Table 3.** Qwen3-4B on Medicine. Scores are percentages; higher is better.
 
 | Method | RaR-Medicine | HealthBench | Avg. |
 |---|---:|---:|---:|
-| Base | 50.38 <sub>↑0.00</sub> | 35.45 <sub>↑0.00</sub> | 42.92 <sub>↑0.00</sub> |
-| GRPO | 53.55 <sub>↑3.17</sub> | 37.62 <sub>↑2.17</sub> | 45.59 <sub>↑2.67</sub> |
-| DAPO-style | 56.29 <sub>↑5.91</sub> | 39.27 <sub>↑3.82</sub> | 47.78 <sub>↑4.87</sub> |
-| GRPO+OPSD | 55.59 <sub>↑5.21</sub> | 38.63 <sub>↑3.18</sub> | 47.11 <sub>↑4.20</sub> |
+| Base | 50.38 | 35.45 | 42.92 |
+| GRPO | 53.55 | 37.62 | 45.59 |
+| DAPO-style | 56.29 | 39.27 | 47.78 |
+| GRPO+OPSD | 55.59 | 38.63 | 47.11 |
 | OPSD\* | 42.00 | 42.10 | 42.05 |
-| **RuACT** | **56.34** <sub>↑5.96</sub> | **40.12** <sub>↑4.67</sub> | **48.23** <sub>↑5.32</sub> |
+| **RuACT** | **56.34** | **40.12** | **48.23** |
 
 OPSD* is the external CriPO reference described above. DAPO-style adapts dynamic sampling to rubric-based GRPO; GRPO+OPSD is the locally evaluated distillation baseline.
 
@@ -170,6 +189,21 @@ RuACT assigns a role according to a rubric's pass rate within the current rollou
 | **RuACT-Teacher** | Unreachable rubrics: all responses fail | Add the rubric as privileged guidance, gate the guided response by aggregate reward, and distill the teacher distribution on the student's response prefix. |
 | **RuACT-Critic** | Saturated positive rubrics: all responses pass | Generate finer child criteria, retain those that distinguish the sampled responses, and share the parent's weight among its children. |
 | **RuACT** | Both types | Combine Teacher distillation with Critic-refined rewards in one policy update. |
+
+For a batch $\mathcal{B}$ of $Q$ query groups, RuACT combines the Critic-refined GRPO loss with gated Teacher distillation:
+
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{RuACT}}(\theta)
+&= \mathcal{L}_{\mathrm{GRPO}}(\theta; R')
++ \frac{\beta}{Q}\sum_{x\in\mathcal{B}}\ell_{\mathrm{distill}}(x), \\
+\ell_{\mathrm{distill}}(x)
+&= \frac{a_x}{|\mathcal{M}_x|}
+\sum_{t\in\mathcal{M}_x}D_{\mathrm{KL}}(q_t\Vert p_t).
+\end{aligned}
+$$
+
+Here, $R'$ uses the refined rubric rewards, and $\mathcal{M}_x$ contains the valid supervised token positions. The detached teacher distribution $q_t$ sees privileged rubric guidance; the student distribution $p_t$ sees the original query. Both use prefixes of the highest-reward ordinary response. The gate $a_x$ is one only when the guided response scores higher than every ordinary rollout; otherwise, the group receives only the GRPO update. Refinement preserves each parent family's weight, allocating a fraction $\lambda$ to its retained children.
 
 The standard Critic proposes **five candidates** per selected parent. It retains candidates passed by **2-6 of the eight responses** and keeps at most **three children per parent**, with at most **three selected parents per query**. If too few children survive, it makes **at most one additional generation round using the filtering feedback**. This is separate from retrying a failed service request. An optional semantic meta-judge can validate the children; its use is recorded explicitly in the audit.
 
