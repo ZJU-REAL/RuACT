@@ -1,0 +1,4 @@
+scoring_rule,quality_alignment,reward_coverage
+parent_rubric_only,57.74,65.92
+decomposed,60.77,88.85
+shuffled_decomposed,53.62,90.44

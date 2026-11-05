@@ -1,0 +1,17 @@
+model,group,method,rar_medicine,healthbench,rar_science,researchqa,average,rar_medicine_gain,healthbench_gain,rar_science_gain,researchqa_gain,average_gain,comparison
+Qwen3-1.7B,Vanilla,Base,38.57,23.18,52.56,50.51,41.21,0.00,0.00,0.00,0.00,0.00,matched
+Qwen3-1.7B,Baselines,GRPO,43.26,26.45,55.67,54.79,45.04,4.69,3.27,3.11,4.28,3.84,matched
+Qwen3-1.7B,Baselines,Reweight,42.60,25.61,56.77,56.11,45.27,4.03,2.43,4.21,5.60,4.07,matched
+Qwen3-1.7B,Baselines,RuscaRL,43.39,23.95,56.41,59.37,45.78,4.82,0.77,3.85,8.86,4.58,matched
+Qwen3-1.7B,Baselines,OPSD*,26.30,38.50,39.60,38.40,35.70,,,,,,external_reference
+Qwen3-1.7B,Ours,RuACT-Teacher,43.82,25.16,58.42,57.76,46.29,5.25,1.98,5.86,7.25,5.09,matched
+Qwen3-1.7B,Ours,RuACT-Critic,43.24,27.97,58.16,58.55,46.98,4.67,4.79,5.60,8.04,5.77,matched
+Qwen3-1.7B,Ours,RuACT,43.35,27.83,58.83,58.65,47.17,4.78,4.65,6.27,8.14,5.96,matched
+Qwen3-4B,Vanilla,Base,50.38,35.45,66.16,59.16,52.79,0.00,0.00,0.00,0.00,0.00,matched
+Qwen3-4B,Baselines,GRPO,53.55,37.62,70.08,64.82,56.52,3.17,2.17,3.92,5.66,3.73,matched
+Qwen3-4B,Baselines,Reweight,55.34,38.46,70.28,65.02,57.28,4.96,3.01,4.12,5.86,4.49,matched
+Qwen3-4B,Baselines,RuscaRL,55.36,37.10,69.38,65.33,56.79,4.98,1.65,3.22,6.17,4.01,matched
+Qwen3-4B,Baselines,OPSD*,42.00,42.10,38.30,45.20,41.90,,,,,,external_reference
+Qwen3-4B,Ours,RuACT-Teacher,55.15,38.57,70.53,66.12,57.59,4.77,3.12,4.37,6.96,4.81,matched
+Qwen3-4B,Ours,RuACT-Critic,55.50,38.77,70.47,64.62,57.34,5.12,3.32,4.31,5.46,4.55,matched
+Qwen3-4B,Ours,RuACT,56.34,40.12,70.59,69.44,59.12,5.96,4.67,4.43,10.28,6.34,matched

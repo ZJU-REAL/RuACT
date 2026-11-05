@@ -1,0 +1,6 @@
+component,variant,rar_medicine,healthbench,average
+Combined,RuACT,56.34,40.12,48.23
+Teacher,RuACT-Teacher,55.15,38.57,46.86
+Teacher,Without gate,55.18,37.45,46.32
+Critic,RuACT-Critic,55.50,38.77,47.14
+Critic,Without filter,54.99,38.50,46.75

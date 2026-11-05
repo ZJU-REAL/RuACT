@@ -1,0 +1,13 @@
+{
+  "source_kind": "author-provided paper PDF",
+  "source_sha256": "97dfe54c40d43ba4599de1f102d1a74bf7dbc8e96f8ea04749a8c6dc12a820af",
+  "rows": 16,
+  "benchmark_cells": 64,
+  "display_precision": 2,
+  "average": "unweighted arithmetic mean of four benchmark scores",
+  "average_gain": "reported paper values, transcribed without recomputing from rounded scores",
+  "external_reference": "OPSD* quoted from CriPO; filtered RaR splits and GPT-4o-mini judge",
+  "verification_scope": "transcription and displayed arithmetic; no new model evaluation",
+  "table": 1,
+  "page": 6
+}

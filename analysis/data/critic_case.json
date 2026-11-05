@@ -1,0 +1,106 @@
+{
+  "source_table": 10,
+  "source_page": 20,
+  "query": "Which muscles are specifically involved in the process of expiration?",
+  "parent": "Explains that abdominal muscles contract to increase intra-abdominal pressure during active expiration.",
+  "children": [
+    "External oblique contraction increases abdominal pressure during forced exhalation.",
+    "Internal oblique helps compress the abdomen during active expiration.",
+    "Transversus abdominis compresses abdominal contents to raise intra-abdominal pressure."
+  ],
+  "verdict_columns": [
+    "parent",
+    "child_1",
+    "child_2",
+    "child_3"
+  ],
+  "responses": [
+    {
+      "id": "R1",
+      "excerpt": "External Oblique: Contracts to pull the ribcage downward and inward (indirectly aiding expiration). ... Internal Oblique: Also helps in pulling the ribcage inward. ... Transverse Abdominis: Contracts to increase abdominal pressure, which helps push the diaphragm upward.",
+      "verdicts": [
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "R2",
+      "excerpt": "Transverse Abdominis: Contracts to compress the abdominal cavity, helping push the diaphragm upward. ... Oblique Muscles (Internal and External Obliques): Contract to stabilize the abdominal wall and assist in forced expiration.",
+      "verdicts": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "R3",
+      "excerpt": "External and Internal Obliques: Contract to compress the abdominal cavity, further helping to expel air from the lungs. ... Transverse Abdominis: Contracts to increase intra-abdominal pressure, assisting in expiration.",
+      "verdicts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "R4",
+      "excerpt": "External Oblique: Contracts to pull the ribcage inward and compress the abdominal cavity. ... Internal Oblique: Similarly contributes to abdominal compression. ... Transversus Abdominis: Contracts to increase abdominal pressure, helping push the diaphragm up.",
+      "verdicts": [
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "R5",
+      "excerpt": "External Oblique and Internal Oblique: Contract to compress the abdominal cavity, helping push the diaphragm upward. ... Transversus Abdominis: Contracts to increase abdominal pressure, assisting in expelling air.",
+      "verdicts": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "R6",
+      "excerpt": "External and Internal Oblique Muscles: Contract to compress the abdominal cavity, further increasing intra-abdominal pressure and aiding in expiration. ... Transversus Abdominis: Contracts to tighten the abdominal wall, assisting in expelling air from the lungs.",
+      "verdicts": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "R7",
+      "excerpt": "External Oblique and Internal Oblique: Contract to compress the abdominal cavity, helping push the diaphragm upward. ... Transversus Abdominis: Contracts to increase abdominal pressure, assisting in expelling air.",
+      "verdicts": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "R8",
+      "excerpt": "Rectus Abdominis: Contracts to push the abdominal organs inward, increasing intra-abdominal pressure and helping expel air from the lungs. ... Transverse Abdominis and Oblique Abdominals (external and internal): These muscles compress the abdominal cavity, further increasing intra-abdominal pressure and assisting in expiration.",
+      "verdicts": [
+        1,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "pass_counts": [
+    8,
+    2,
+    4,
+    4
+  ],
+  "note": "Stored rubric-judge verdicts reproduced from the paper. Excerpts omit unrelated response material with ellipses; they are not new judgments."
+}

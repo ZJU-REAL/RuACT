@@ -1,0 +1,72 @@
+{
+  "source_kind": "author-provided paper PDF",
+  "source_sha256": "97dfe54c40d43ba4599de1f102d1a74bf7dbc8e96f8ea04749a8c6dc12a820af",
+  "figures": [
+    {
+      "asset": "assets/teacher_recovery.png",
+      "figure": 4,
+      "page": 6,
+      "render_dpi": 300,
+      "crop_pixels_at_render_dpi": [
+        289,
+        1661,
+        930,
+        518
+      ],
+      "sha256": "5ceaa5499e8797e718531868c48fbfd6d92459d1adcce3460cc9edee0da44c5e"
+    },
+    {
+      "asset": "assets/critic_dispersion.png",
+      "figure": 5,
+      "page": 7,
+      "render_dpi": 300,
+      "crop_pixels_at_render_dpi": [
+        289,
+        284,
+        927,
+        499
+      ],
+      "sha256": "833c05e83649c3d146cae67e28e2aa2bb113aa6dfe6b839199b297d5ef17a646"
+    },
+    {
+      "asset": "assets/policy_gains.png",
+      "figure": 6,
+      "page": 7,
+      "render_dpi": 300,
+      "crop_pixels_at_render_dpi": [
+        1268,
+        284,
+        927,
+        682
+      ],
+      "sha256": "25b02aed2895bc895384b9a0c416ef953bf9af97c98a313e0f93d76e3d6de177"
+    }
+  ],
+  "tables": {
+    "checkpoint_scores.csv": {
+      "table": 1,
+      "page": 6
+    },
+    "critic_alignment.csv": {
+      "table": 2,
+      "page": 6
+    },
+    "optimization_scores.csv": {
+      "table": 3,
+      "page": 7
+    },
+    "ood_scores.csv": {
+      "table": 4,
+      "page": 7
+    },
+    "ablation_scores.csv": {
+      "table": 5,
+      "page": 8
+    },
+    "critic_case.json": {
+      "table": 10,
+      "page": 20
+    }
+  },
+  "figure_handling": "Direct page-region rasterization; no redrawing, curve fitting, or replacement data."
+}

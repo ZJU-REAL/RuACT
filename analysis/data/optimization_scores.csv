@@ -1,0 +1,7 @@
+method,rar_medicine,healthbench,average,rar_medicine_gain,healthbench_gain,average_gain,comparison
+Base,50.38,35.45,42.92,0.00,0.00,0.00,matched
+GRPO,53.55,37.62,45.59,3.17,2.17,2.67,matched
+DAPO-style,56.29,39.27,47.78,5.91,3.82,4.87,matched
+GRPO+OPSD,55.59,38.63,47.11,5.21,3.18,4.20,matched
+OPSD*,42.00,42.10,42.05,,,,external_reference
+RuACT,56.34,40.12,48.23,5.96,4.67,5.32,matched
