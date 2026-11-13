@@ -4,6 +4,11 @@
 
 **Recovering Inactive Rubrics as Adaptive Critics and Teachers**
 
+[![arXiv](https://img.shields.io/badge/arXiv-2611.09597-b31b1b?style=flat-square)](https://arxiv.org/abs/2611.09597)
+[![Project Page](https://img.shields.io/badge/Project-Page-3D6FB6?style=flat-square)](https://zjureal.com/RuACT/)
+
+<img src="assets/hero.png" alt="RuACT: a Student robot writes its answers under a rubric chart with two faded lines; the Teacher, the same robot with a book, guides it with a lightbulb hint so the line nobody met gets a check, and the Critic, with a magnifier and red pen, evaluates more finely as one big tick resolves into finer marks" width="100%">
+
 [Highlights](#highlights) · [Results](#results) · [Analysis](#analysis) · [Method](#method) · [Quick start](#quick-start)
 
 </div>
@@ -297,3 +302,16 @@ The focused CPU tests check Teacher, Critic, reward and baseline behavior with f
 | [tests/](tests/) | Focused checks for the method's branches and numerical invariants. |
 
 DeepRubric is covered by the data contract; a verified DeepRubric-7B training recipe is not included in this release. The project uses the [Apache-2.0 license](LICENSE); upstream attribution is retained in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
+
+## Citation
+
+If you find RuACT useful, please cite:
+
+```bibtex
+@article{li2026ruact,
+  title   = {RuACT: Recovering Inactive Rubrics as Adaptive Critics and Teachers},
+  author  = {Li, Yijun and Lu, Zhengxi and Liu, Zhipiao and Yu, Jinzheng and Weng, Xutao and Shao, Jian and Shen, Yongliang},
+  journal = {arXiv preprint arXiv:2611.09597},
+  year    = {2026}
+}
+```
