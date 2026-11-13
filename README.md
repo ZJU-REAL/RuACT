@@ -2,35 +2,57 @@
 
 # RuACT
 
-**Recovering Inactive Rubrics as Adaptive Critics and Teachers**
+### Recovering Inactive Rubrics as Adaptive Critics and Teachers
 
 [![arXiv](https://img.shields.io/badge/arXiv-2611.09597-b31b1b?style=flat-square)](https://arxiv.org/abs/2611.09597)
 [![Project Page](https://img.shields.io/badge/Project-Page-3D6FB6?style=flat-square)](https://zjureal.com/RuACT/)
 
-<img src="assets/hero.png" alt="RuACT: a Student robot writes its answers under a rubric chart with two faded lines; the Teacher, the same robot with a book, guides it with a lightbulb hint so the line nobody met gets a check, and the Critic, with a magnifier and red pen, evaluates more finely as one big tick resolves into finer marks" width="100%">
-
-[Highlights](#highlights) · [Results](#results) · [Analysis](#analysis) · [Method](#method) · [Quick start](#quick-start)
-
 </div>
+
+<p align="center">
+  <img src="assets/hero.png" alt="RuACT: a Student robot writes its answers under a rubric chart with two faded lines; the Teacher, the same robot with a book, guides it with a lightbulb hint so the line nobody met gets a check, and the Critic, with a magnifier and red pen, evaluates more finely as one big tick resolves into finer marks" width="100%">
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#highlights">Highlights</a> ·
+  <a href="#results">Results</a> ·
+  <a href="#method">Method</a> ·
+  <a href="#analysis">Analysis</a> ·
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#citation">Citation</a>
+</p>
+
+<a id="overview"></a>
+
+## 🔎 Overview
+
+Rubric-based reinforcement learning scores responses against query-specific requirements. A requirement that every sampled response fails or passes gives the whole group the same outcome and contributes no relative learning signal. **RuACT** recovers these inactive rubrics in two ways: a **Teacher** uses unreachable requirements as privileged guidance, and a **Critic** decomposes saturated requirements into finer criteria that distinguish the responses. The two roles train a single policy, which generates responses without privileged rubric guidance at inference time.
 
 <p align="center">
   <img src="assets/overview.png" alt="RuACT uses unreachable rubrics for reward-gated teacher guidance and saturated rubrics for discriminative child-rubric refinement" width="100%">
 </p>
 
-Rubric-based reinforcement learning scores responses against query-specific requirements. A requirement that every sampled response fails or passes gives the whole group the same outcome and contributes no relative learning signal. **RuACT** recovers these inactive rubrics in two ways: a **Teacher** uses unreachable requirements as privileged guidance, and a **Critic** decomposes saturated requirements into finer criteria that distinguish the responses. The two roles train a single policy, which generates responses without privileged rubric guidance at inference time.
+<a id="news"></a>
 
-## News
+## 📰 News
 
+- **Nov 2026** — Project page released: <https://zjureal.com/RuACT/>.
+- **Nov 2026** — Paper released on [arXiv](https://arxiv.org/abs/2611.09597).
 - **Nov 2026** — Code released.
 
-## Highlights
+<a id="highlights"></a>
+
+## ✨ Highlights
 
 - **Two roles for inactive rubrics.** Reward-gated teacher guidance targets missing behaviors; child-rubric refinement restores distinctions among responses that pass the same parent.
 - **Gains across Medicine and Science.** RuACT achieves the best average at both model scales: **47.17%** for Qwen3-1.7B and **59.12%** for Qwen3-4B across four benchmarks.
 - **Recovery beyond the guided response.** On initially unreachable rubrics, unguided recovery reaches **42.86%**, compared with **35.02%** for GRPO.
 - **More informative criticism.** On independent rollouts, matched child rubrics improve reward-quality alignment from **57.74%** to **60.77%**.
 
-## Results
+<a id="results"></a>
+
+## 📊 Results
 
 **Table 1.** Results from the paper's main table, in percent; higher is better. Medicine and Science use separate training runs.
 
@@ -78,7 +100,38 @@ The paper uses separate models for training judgments, child-rubric proposals, a
 
 Thinking and top-k filtering are disabled in both sampling settings. Evaluation responses are generated once and reused across judges. Rubric scores use the explicit signed weights; HealthBench divides signed rubric points by total positive weight. Aggregation is fixed across methods within each benchmark. Training budgets and sequence limits are listed under [Shared defaults](#shared-defaults); runnable scoring commands are in the [evaluation guide](docs/evaluation.md).
 
-## Analysis
+<a id="method"></a>
+
+## 🧭 Method
+
+RuACT assigns a role according to a rubric's pass rate within the current rollout group.
+
+| Component | Target | Training signal |
+|---|---|---|
+| **RuACT-Teacher** | Unreachable rubrics: all responses fail | Add the rubric as privileged guidance, gate the guided response by aggregate reward, and distill the teacher distribution on the student's response prefix. |
+| **RuACT-Critic** | Saturated positive rubrics: all responses pass | Generate finer child criteria, retain those that distinguish the sampled responses, and share the parent's weight among its children. |
+| **RuACT** | Both types | Combine Teacher distillation with Critic-refined rewards in one policy update. |
+
+For a batch $\mathcal{B}$ of $Q$ query groups, RuACT combines the Critic-refined GRPO loss with gated Teacher distillation:
+
+```math
+\begin{aligned}
+\mathcal{L}_{\mathrm{RuACT}}(\theta)
+&= \mathcal{L}_{\mathrm{GRPO}}(\theta; R') + \frac{\beta}{Q}\sum_{x\in\mathcal{B}}\ell_{\mathrm{distill}}(x), \\
+\ell_{\mathrm{distill}}(x)
+&= \frac{a_x}{|\mathcal{M}_x|}\sum_{t\in\mathcal{M}_x}D_{\mathrm{KL}}(q_t\Vert p_t).
+\end{aligned}
+```
+
+Here, $R'$ uses the refined rubric rewards, and $\mathcal{M}_x$ contains the valid supervised token positions. The detached teacher distribution $q_t$ sees privileged rubric guidance; the student distribution $p_t$ sees the original query. Both use prefixes of the highest-reward ordinary response. The gate $a_x$ is one only when the guided response scores higher than every ordinary rollout; otherwise, the group receives only the GRPO update. Refinement preserves each parent family's weight, allocating a fraction $\lambda$ to its retained children.
+
+The standard Critic proposes **five candidates** per selected parent. It retains candidates passed by **2-6 of the eight responses** and keeps at most **three children per parent**, with at most **three selected parents per query**. If too few children survive, it makes **at most one additional generation round using the filtering feedback**. This is separate from retrying a failed service request. An optional semantic meta-judge can validate the children; its use is recorded explicitly in the audit.
+
+Standalone Teacher/Critic and combined RuACT share their implementations. Teacher coefficients are **0.1 for 1.7B** and **0.05 for 4B**; the Critic blend coefficient is **0.5**. See the [training guide](docs/training.md) for the objective, gate, filtering policy, and baseline definitions.
+
+<a id="analysis"></a>
+
+## 🔬 Analysis
 
 ### Recovering unreachable rubrics
 
@@ -185,34 +238,9 @@ These are the stored judge verdicts reported in the paper: 1 means satisfied and
 
 Figures 4-6 are direct excerpts from the paper. Table values and source locations are provided in [analysis/](analysis/README.md).
 
-## Method
+<a id="quick-start"></a>
 
-RuACT assigns a role according to a rubric's pass rate within the current rollout group.
-
-| Component | Target | Training signal |
-|---|---|---|
-| **RuACT-Teacher** | Unreachable rubrics: all responses fail | Add the rubric as privileged guidance, gate the guided response by aggregate reward, and distill the teacher distribution on the student's response prefix. |
-| **RuACT-Critic** | Saturated positive rubrics: all responses pass | Generate finer child criteria, retain those that distinguish the sampled responses, and share the parent's weight among its children. |
-| **RuACT** | Both types | Combine Teacher distillation with Critic-refined rewards in one policy update. |
-
-For a batch $\mathcal{B}$ of $Q$ query groups, RuACT combines the Critic-refined GRPO loss with gated Teacher distillation:
-
-```math
-\begin{aligned}
-\mathcal{L}_{\mathrm{RuACT}}(\theta)
-&= \mathcal{L}_{\mathrm{GRPO}}(\theta; R') + \frac{\beta}{Q}\sum_{x\in\mathcal{B}}\ell_{\mathrm{distill}}(x), \\
-\ell_{\mathrm{distill}}(x)
-&= \frac{a_x}{|\mathcal{M}_x|}\sum_{t\in\mathcal{M}_x}D_{\mathrm{KL}}(q_t\Vert p_t).
-\end{aligned}
-```
-
-Here, $R'$ uses the refined rubric rewards, and $\mathcal{M}_x$ contains the valid supervised token positions. The detached teacher distribution $q_t$ sees privileged rubric guidance; the student distribution $p_t$ sees the original query. Both use prefixes of the highest-reward ordinary response. The gate $a_x$ is one only when the guided response scores higher than every ordinary rollout; otherwise, the group receives only the GRPO update. Refinement preserves each parent family's weight, allocating a fraction $\lambda$ to its retained children.
-
-The standard Critic proposes **five candidates** per selected parent. It retains candidates passed by **2-6 of the eight responses** and keeps at most **three children per parent**, with at most **three selected parents per query**. If too few children survive, it makes **at most one additional generation round using the filtering feedback**. This is separate from retrying a failed service request. An optional semantic meta-judge can validate the children; its use is recorded explicitly in the audit.
-
-Standalone Teacher/Critic and combined RuACT share their implementations. Teacher coefficients are **0.1 for 1.7B** and **0.05 for 4B**; the Critic blend coefficient is **0.5**. See the [training guide](docs/training.md) for the objective, gate, filtering policy, and baseline definitions.
-
-## Quick start
+## 🚀 Quick Start
 
 ```bash
 git clone https://github.com/ZJU-REAL/RuACT.git
@@ -280,7 +308,9 @@ pytest -q
 
 The focused CPU tests check Teacher, Critic, reward and baseline behavior with fixed judge responses. GPU training and benchmark evaluation use the launchers above and the [evaluation guide](docs/evaluation.md).
 
-## Repository layout
+<a id="repository-layout"></a>
+
+## 🗂️ Repository Layout
 
 | Path | Contents |
 |---|---|
@@ -303,7 +333,9 @@ The focused CPU tests check Teacher, Critic, reward and baseline behavior with f
 
 DeepRubric is covered by the data contract; a verified DeepRubric-7B training recipe is not included in this release. The project uses the [Apache-2.0 license](LICENSE); upstream attribution is retained in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
 
-## Citation
+<a id="citation"></a>
+
+## 📝 Citation
 
 If you find RuACT useful, please cite:
 
