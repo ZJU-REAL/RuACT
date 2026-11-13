@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>RuACT | Recovering Inactive Rubrics as Adaptive Critics and Teachers</title>
+    <meta
+      content="RuACT turns inactive rubrics in rubric-based RL into signal: unreachable rubrics become privileged Teachers, saturated rubrics become finer-grained Critics."
+      name="description"
+    />
+    <meta content="#ffffff" name="theme-color" />
+    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <a class="ru-skip" href="#main">Skip to content</a>
+
+    <main id="main">
+      <!-- =============================== Header =============================== -->
+      <header class="ru-hero" id="top">
+        <div class="ru-col">
+          <h1 class="ru-title">
+            <span class="ru-name">RuACT</span>: Recovering Inactive Rubrics as Adaptive Critics and Teachers
+          </h1>
+          <p class="ru-authors">
+            Yijun Li<sup>1</sup>, Zhengxi Lu<sup>1</sup>, Zhipiao Liu<sup>2</sup>, Jinzheng Yu<sup>2</sup>,
+            Xutao Weng<sup>2</sup>, Jian Shao<sup>1</sup>, Yongliang Shen<sup>1</sup>
+          </p>
+          <p class="ru-affil"><span><sup>1</sup>Zhejiang University</span><span><sup>2</sup>Huawei</span></p>
+          <div class="ru-buttons">
+            <a class="ru-btn" href="https://arxiv.org/abs/2611.09597">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></svg>
+              Paper
+            </a>
+            <a class="ru-btn" href="https://github.com/ZJU-REAL/RuACT">
+              <svg aria-hidden="true" class="fill" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" /></svg>
+              Code
+            </a>
+            <a class="ru-btn" href="#cite">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z" /></svg>
+              BibTeX
+            </a>
+          </div>
+        </div>
+
+        <figure class="ru-teaser">
+          <img
+            alt="Paper overview figure: rubric states, Rubric as Teacher with a reward gate and on-policy self-distillation, Rubric as Critic with decomposition and weight budget, and the policy update."
+            height="1340"
+            src="assets/overview.png"
+            width="2880"
+          />
+          <figcaption>
+            <b>RuACT</b> assigns each inactive rubric the role that supplies what it lacks: unreachable rubrics become
+            privileged guidance for a reward-gated <span class="t">Teacher</span>, and saturated rubrics are decomposed by a
+            <span class="c">Critic</span> into child rubrics that separate the responses.
+          </figcaption>
+        </figure>
+      </header>
+
+      <!-- ============================== Abstract ============================== -->
+      <section class="ru-section" id="abstract">
+        <div class="ru-col">
+          <h2>Abstract</h2>
+          <p>
+            Rubric-based reinforcement learning (RL) extends RL with verifiable rewards to open-ended tasks by scoring each
+            response against query-specific rubrics. Under group-relative optimization, however, a rubric that every
+            sampled response fails (unreachable) or passes (saturated) gives all responses the same outcome and no
+            learning signal; in Qwen3-4B medical training, 60.88% of query–rubric observations are inactive. We find that
+            the two states lack different supervision: stating an unreachable rubric in the prompt raises its satisfaction
+            from 1.13% to 91.25%, whereas responses that all pass a saturated rubric still differ in quality. We therefore
+            propose RuACT (Rubrics as Adaptive Critics and Teachers), which assigns each inactive rubric the role that
+            supplies what it lacks. Rubric as Teacher uses unreachable rubrics as privileged information for reward-gated
+            on-policy self-distillation, and Rubric as Critic decomposes saturated rubrics into child rubrics that separate
+            current responses while sharing the parent's weight. RuACT outperforms GRPO, rubric reweighting, and
+            rubric-guided exploration on all four medical and scientific benchmarks with Qwen3-4B and achieves the best
+            average with Qwen3-1.7B. On initially unreachable rubrics, unguided recovery rises from 35.02% to 42.86%, while
+            child refinement improves reward–quality alignment on independent rollouts from 57.74% to 60.77%.
+          </p>
+          <dl class="ru-facts">
+            <div><dt>60.88%</dt><dd>of query–rubric observations are inactive (Qwen3-4B, Medicine)</dd></div>
+            <div><dt>47.17 / 59.12</dt><dd>best average at 1.7B / 4B over four benchmarks</dd></div>
+            <div><dt>35.02 → 42.86%</dt><dd>unguided recovery of unreachable rubrics, GRPO → RuACT</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ============================== Problem ============================== -->
+      <section class="ru-section" id="problem">
+        <div class="ru-col">
+          <h2>Inactive rubrics</h2>
+          <p>
+            Under group-relative optimization, each response is compared with the other responses sampled for the same
+            query. A rubric that all eight responses fail or all pass gives the whole group the same outcome and cancels
+            out of the advantage, so only rubrics with intermediate pass rates provide a learning signal. The two inactive
+            states lack different things.
+          </p>
+          <div class="ru-states">
+            <article class="ru-state t">
+              <p class="ru-state-k"><span>Unreachable</span><span class="p">p = 0</span></p>
+              <div aria-label="Eight responses, all fail" class="ru-cells" role="img">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <p>
+                <b>Lacks the behavior.</b> Stating the rubric in the prompt raises its satisfaction from 1.13% to 91.25%.
+              </p>
+              <p class="ru-role">→ Rubric as Teacher</p>
+            </article>
+            <article class="ru-state">
+              <p class="ru-state-k"><span>Informative</span><span class="p">0 &lt; p &lt; 1</span></p>
+              <div aria-label="Eight responses, mixed results" class="ru-cells" role="img">
+                <i class="ok"></i><i></i><i class="ok"></i><i></i><i class="ok"></i><i class="ok"></i><i></i><i></i>
+              </div>
+              <p><b>Separates the group.</b> Passing and failing responses receive different advantages.</p>
+              <p class="ru-role">→ original reward</p>
+            </article>
+            <article class="ru-state c">
+              <p class="ru-state-k"><span>Saturated</span><span class="p">p = 1</span></p>
+              <div aria-label="Eight responses, all pass" class="ru-cells" role="img">
+                <i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i><i class="ok"></i>
+              </div>
+              <p><b>Lacks a distinction.</b> Responses that all pass still differ in quality.</p>
+              <p class="ru-role">→ Rubric as Critic</p>
+            </article>
+          </div>
+          <p class="ru-note">Each square is one of eight sampled responses: filled = passes the rubric, empty = fails it.</p>
+        </div>
+      </section>
+
+      <!-- ============================== Method ============================== -->
+      <section class="ru-section" id="method">
+        <div class="ru-col">
+          <h2>Method</h2>
+          <p>
+            RuACT assigns a role according to a rubric's pass rate within the current rollout group. The animation steps
+            through one illustrative group of eight rollouts; use the tabs to jump to a stage.
+          </p>
+        </div>
+
+        <figure class="ru-fig reveal" data-ru-fig>
+          <div class="ru-fig-bar">
+            <div aria-label="Show one stage" class="ru-tabs" role="group">
+              <button data-ru-phase="diagnose" type="button">1. Diagnose<i></i></button>
+              <button class="t" data-ru-phase="teacher" type="button">2. Teacher<i></i></button>
+              <button class="c" data-ru-phase="critic" type="button">3. Critic<i></i></button>
+              <button data-ru-phase="update" type="button">4. Update<i></i></button>
+            </div>
+            <button aria-label="Pause animation" class="ru-play" data-ru-play type="button">
+              <svg aria-hidden="true" class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></svg>
+              <svg aria-hidden="true" class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" /></svg>
+            </button>
+          </div>
+
+          <div class="ru-stage" data-ru-stage>
+            <svg aria-hidden="true" class="ru-wires" data-ru-wires></svg>
+
+            <!-- Rubric states -->
+            <section aria-label="Rubric states" class="ru-panel ru-p-states" data-ru-panel="diagnose">
+              <h3 class="ru-panel-title"><span class="nm">Rubric states</span></h3>
+              <div class="ru-qp">
+                <span class="ru-chip" data-ru-a="query" data-step="1">Query x</span>
+                <span aria-hidden="true" class="ru-arrow" data-step="1">→</span>
+                <span class="ru-chip ru-pol" data-ru-a="policy" data-step="1">Policy π<sub>θ</sub></span>
+              </div>
+              <p class="ru-small" data-step="2">8 rollouts y<sub>1</sub>…y<sub>8</sub>, each judged against every rubric</p>
+              <div class="ru-grid" data-step="2">
+                <span class="hd"></span>
+                <span class="hd">1</span><span class="hd">2</span><span class="hd">3</span><span class="hd">4</span>
+                <span class="hd">5</span><span class="hd">6</span><span class="hd">7</span><span class="hd">8</span>
+                <span class="hd"></span>
+                <div class="ru-row un" data-ru-a="r1" data-row="0">
+                  <span class="rn">r<sub>1</sub></span>
+                  <i>✗</i><i>✗</i><i>✗</i><i>✗</i><i>✗</i><i>✗</i><i>✗</i><i>✗</i>
+                  <span class="tag" data-step="3">p = 0</span>
+                </div>
+                <div class="ru-row inf" data-ru-a="r2" data-row="1">
+                  <span class="rn">r<sub>2</sub></span>
+                  <i class="ok">✓</i><i>✗</i><i class="ok">✓</i><i>✗</i><i class="ok">✓</i><i class="ok">✓</i><i>✗</i><i>✗</i>
+                  <span class="tag" data-step="3">0&lt;p&lt;1</span>
+                </div>
+                <div class="ru-row inf" data-ru-a="r3" data-row="2">
+                  <span class="rn">r<sub>3</sub></span>
+                  <i>✗</i><i class="ok">✓</i><i class="ok">✓</i><i>✗</i><i class="ok">✓</i><i>✗</i><i class="ok">✓</i><i>✗</i>
+                  <span class="tag" data-step="3">0&lt;p&lt;1</span>
+                </div>
+                <div class="ru-row sat" data-ru-a="r4" data-row="3">
+                  <span class="rn">r<sub>4</sub></span>
+                  <i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i>
+                  <span class="tag" data-step="3">p = 1</span>
+                </div>
+              </div>
+              <ul class="ru-legend" data-step="3">
+                <li class="t"><i></i>Unreachable<span>→ Teacher</span></li>
+                <li><i></i>Informative<span>→ original reward</span></li>
+                <li class="c"><i></i>Saturated<span>→ Critic</span></li>
+              </ul>
+              <p class="ru-zero" data-step="4">
+                r<sub>1</sub> and r<sub>4</sub> give identical outcomes across the group: advantage contribution <b>0</b>.
+              </p>
+            </section>
+
+            <!-- Teacher -->
+            <section aria-label="Rubric as Teacher" class="ru-panel ru-p-teacher" data-ru-panel="teacher">
+              <h3 class="ru-panel-title"><span class="nm">Rubric as Teacher</span> <small>unreachable r<sub>1</sub></small></h3>
+              <div class="ru-tflow">
+                <div class="ru-tnode" data-ru-a="t-rubric" data-step="1">
+                  <span class="ru-k">Privileged guidance</span>
+                  <span class="ru-rub">r<sub>1</sub> in the prompt</span>
+                  <span class="ru-self">Self-teacher <small>same policy, detached</small></span>
+                </div>
+                <span aria-hidden="true" class="ru-arrow" data-step="2">→</span>
+                <div class="ru-tnode" data-step="2">
+                  <span class="ru-k">Guided response</span>
+                  <span class="ru-rub">ỹ</span>
+                </div>
+                <span aria-hidden="true" class="ru-arrow" data-step="2">→</span>
+                <div class="ru-gate" data-step="3">
+                  <span class="ru-diamond"><b>?</b><b class="ok">✓</b></span>
+                  <span class="ru-gate-rule">R(ỹ) &gt; max<sub>i</sub> R(y<sub>i</sub>)</span>
+                  <span class="ru-gate-no">No: skip distillation, keep GRPO</span>
+                </div>
+              </div>
+              <div class="ru-distill" data-ru-a="t-distill" data-step="4">
+                <span class="ru-k">Yes: on-policy self-distillation</span>
+                <div aria-hidden="true" class="ru-hists">
+                  <span class="ru-hist q"><i style="--h: 0.25"></i><i style="--h: 0.55"></i><i style="--h: 1"></i><i style="--h: 0.45"></i><i style="--h: 0.2"></i><small>teacher q<sup>+</sup></small></span>
+                  <span class="ru-kl">D<sub>KL</sub>(q<sup>+</sup><sub>t</sub> ‖ p<sub>θ,t</sub>)</span>
+                  <span class="ru-hist p"><i style="--h: 0.6"></i><i style="--h: 0.35"></i><i style="--h: 0.55"></i><i style="--h: 0.4"></i><i style="--h: 0.3"></i><small>student p</small></span>
+                </div>
+                <span class="ru-small">On prefixes of the highest-reward ordinary rollout y*</span>
+              </div>
+            </section>
+
+            <!-- Critic -->
+            <section aria-label="Rubric as Critic" class="ru-panel ru-p-critic" data-ru-panel="critic">
+              <h3 class="ru-panel-title"><span class="nm">Rubric as Critic</span> <small>saturated r<sub>4</sub></small></h3>
+              <div class="ru-cflow">
+                <div class="ru-parent" data-ru-a="c-parent" data-step="1">
+                  <span class="ru-k">Parent</span>
+                  <span class="ru-rub">r<sub>4</sub></span>
+                  <span class="ru-pass">8/8 pass</span>
+                </div>
+                <ul class="ru-children" data-step="2">
+                  <li class="drop"><span>c<sub>1</sub></span><b>0/8</b><em>never passed</em></li>
+                  <li class="keep"><span>c<sub>2</sub></span><b>2/8</b><em>keep</em></li>
+                  <li class="keep"><span>c<sub>3</sub></span><b>5/8</b><em>keep</em></li>
+                  <li class="drop"><span>c<sub>4</sub></span><b>8/8</b><em>still saturated</em></li>
+                </ul>
+                <div class="ru-weights" data-ru-a="c-weights">
+                  <span class="ru-k">Preserve the weight budget</span>
+                  <span class="ru-wbar whole"><i>ω<sub>4</sub></i></span>
+                  <span class="ru-wbar split" data-step="3">
+                    <i class="p">(1−λ)ω<sub>4</sub></i><i class="k">λω<sub>4</sub>/2</i><i class="k">λω<sub>4</sub>/2</i>
+                  </span>
+                  <span class="ru-small" data-step="3">Parent keeps (1−λ)ω; retained children share λω</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Policy update -->
+            <section aria-label="Policy update" class="ru-panel ru-p-update" data-ru-panel="update">
+              <h3 class="ru-panel-title"><span class="nm">Policy update</span></h3>
+              <div class="ru-ucard t" data-ru-a="u-distill" data-step="1">
+                <span class="ru-k">Distillation</span>
+                <span class="ru-math">β · ℓ<sub>distill</sub></span>
+              </div>
+              <div class="ru-ucard" data-ru-a="u-reward" data-step="2">
+                <span class="ru-k">Rubric reward</span>
+                <span class="ru-math">R′</span>
+                <span class="ru-small">original + refined rubrics</span>
+              </div>
+              <span aria-hidden="true" class="ru-down" data-step="2">↓</span>
+              <div class="ru-ucard" data-step="3">
+                <span class="ru-math sm">A<sub>i</sub> = (R′<sub>i</sub> − mean R′) / (σ(R′) + ε)</span>
+                <span class="ru-math">𝓛<sub>GRPO</sub>(R′)</span>
+              </div>
+              <span aria-hidden="true" class="ru-plus" data-step="4">+</span>
+              <div class="ru-ucard ink" data-ru-a="u-pi" data-step="4">
+                <span class="ru-math">π<sub>θ+1</sub></span>
+                <span class="ru-small">no rubric guidance at inference</span>
+              </div>
+            </section>
+          </div>
+
+          <figcaption>
+            Unreachable rubrics become privileged guidance for a reward-gated self-teacher; saturated rubrics are
+            decomposed into child rubrics that separate the responses while sharing the parent's weight; informative
+            rubrics keep their original reward. One policy is trained by
+            𝓛<sub>RuACT</sub> = 𝓛<sub>GRPO</sub>(R′) + (β/Q) Σ<sub>x</sub> ℓ<sub>distill</sub>(x).
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ============================== Teacher ============================== -->
+      <section class="ru-section" id="teacher">
+        <div class="ru-col">
+          <h2>Rubric as <span class="t">Teacher</span></h2>
+          <p>An unreachable rubric lacks the behavior, so RuACT uses it as privileged guidance.</p>
+          <ol class="ru-steps">
+            <li>
+              <b>Select.</b> A positive rubric is unreachable when none of the eight responses passes it; at most three
+              such rubrics are selected per query.
+            </li>
+            <li>
+              <b>Guide.</b> The same policy, with gradients detached, sees the selected rubrics as privileged guidance and
+              writes a guided response ỹ. Policy inputs stay unprivileged.
+            </li>
+            <li>
+              <b>Gate.</b> Distillation is used only when ỹ scores higher than every ordinary rollout. Otherwise the group
+              receives only the GRPO update.
+            </li>
+            <li>
+              <b>Distill.</b> The privileged distribution q<sup>+</sup> is distilled into the student p along the
+              highest-reward ordinary response, not the teacher's own continuation. The coefficient is 0.1 at 1.7B and
+              0.05 at 4B.
+            </li>
+          </ol>
+          <dl class="ru-facts t">
+            <div><dt>1.13 → 91.25%</dt><dd>satisfaction of an unreachable rubric once it is stated in the prompt</dd></div>
+            <div><dt>35.02 → 42.86%</dt><dd>initially unreachable rubrics recovered by an unguided response, GRPO → RuACT</dd></div>
+            <div><dt>46.32 → 46.86</dt><dd>Medicine average without → with the reward gate (RuACT-Teacher, Qwen3-4B)</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ============================== Critic ============================== -->
+      <section class="ru-section" id="critic">
+        <div class="ru-col">
+          <h2>Rubric as <span class="c">Critic</span></h2>
+          <p>A saturated rubric lacks a distinction, so RuACT decomposes it into finer child rubrics.</p>
+          <ol class="ru-steps">
+            <li>
+              <b>Propose.</b> For at most three saturated positive parents per query, a proposal model writes 5 candidate
+              child rubrics from the query and the parent.
+            </li>
+            <li>
+              <b>Filter.</b> Candidates are judged on the same eight responses; those passed by 2–6 of them are kept, at
+              most 3 per parent. If too few survive, one extra proposal round uses the rejected wording as feedback.
+            </li>
+            <li>
+              <b>Share the weight.</b> For parent weight ω, the parent keeps (1−λ)ω and the retained children share λω
+              equally, with λ = 0.5. The family's total weight is unchanged.
+            </li>
+          </ol>
+
+          <div class="ru-case" data-ru-case>
+            <div class="ru-case-head">
+              <p class="ru-case-title">Case study (paper Table 10)</p>
+              <div aria-label="Scoring" class="ru-seg" role="group">
+                <button aria-pressed="false" data-mode="parent" type="button">Parent only</button>
+                <button aria-pressed="true" data-mode="children" type="button">With child rubrics</button>
+              </div>
+            </div>
+            <p class="ru-query">Query: “Which muscles are specifically involved in the process of expiration?”</p>
+            <div aria-label="Judge verdicts for eight responses" class="ru-casegrid" role="table">
+              <div class="ru-crow hd" role="row">
+                <span role="columnheader">Criterion</span>
+                <span role="columnheader">R1</span><span role="columnheader">R2</span><span role="columnheader">R3</span><span role="columnheader">R4</span>
+                <span role="columnheader">R5</span><span role="columnheader">R6</span><span role="columnheader">R7</span><span role="columnheader">R8</span>
+              </div>
+              <div class="ru-crow parent" data-v="1,1,1,1,1,1,1,1" role="row">
+                <span role="rowheader" title="Explains that abdominal muscles contract to increase intra-abdominal pressure during active expiration.">Parent: abdominal muscles raise intra-abdominal pressure</span>
+              </div>
+              <div class="ru-crow child" data-v="0,0,1,0,0,1,0,0" role="row">
+                <span role="rowheader" title="External oblique contraction increases abdominal pressure during forced exhalation.">Child 1: external oblique</span>
+              </div>
+              <div class="ru-crow child" data-v="1,0,1,1,0,1,0,0" role="row">
+                <span role="rowheader" title="Internal oblique helps compress the abdomen during active expiration.">Child 2: internal oblique</span>
+              </div>
+              <div class="ru-crow child" data-v="1,0,1,1,0,1,0,0" role="row">
+                <span role="rowheader" title="Transversus abdominis compresses abdominal contents to raise intra-abdominal pressure.">Child 3: transversus abdominis</span>
+              </div>
+              <div class="ru-crow total" role="row">
+                <span role="rowheader">Family reward (× ω)</span>
+              </div>
+            </div>
+            <p aria-live="polite" class="ru-case-note" data-ru-case-note></p>
+          </div>
+
+          <p>
+            Do the children agree with quality, or only add variance? Blind quality judgments on 300 rollout groups (2,400
+            responses):
+          </p>
+          <table class="ru-table">
+            <thead>
+              <tr><th scope="col">Scoring rule</th><th scope="col">Quality alignment</th><th scope="col">Reward coverage</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Parent rubric only</th><td>57.74</td><td>65.92</td></tr>
+              <tr><th scope="row">With decomposed rubrics</th><td class="best">60.77</td><td class="second">88.85</td></tr>
+              <tr><th scope="row">With shuffled decomposed rubrics</th><td>53.62</td><td class="best">90.44</td></tr>
+            </tbody>
+          </table>
+          <p class="ru-note">
+            Matched children improve alignment by 3.03 points. Shuffling raises coverage but lowers alignment, so reward
+            variation alone is not enough.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================== Results ============================== -->
+      <section class="ru-section" id="results">
+        <div class="ru-col">
+          <h2>Results</h2>
+          <p>
+            RuACT outperforms GRPO, rubric reweighting and rubric-guided exploration on all four benchmarks with
+            Qwen3-4B, and achieves the best average with Qwen3-1.7B.
+          </p>
+          <div class="ru-book" data-ru-book>
+            <div class="ru-book-head">
+              <div aria-label="Model" class="ru-seg" role="group">
+                <button aria-pressed="false" data-model="1.7B" type="button">Qwen3-1.7B</button>
+                <button aria-pressed="true" data-model="4B" type="button">Qwen3-4B</button>
+              </div>
+              <p class="ru-note">Best in <b>bold</b>, second <u>underlined</u>, among matched methods.</p>
+            </div>
+            <div class="ru-table-scroll">
+              <table class="ru-table ru-gradebook">
+                <thead>
+                  <tr>
+                    <th scope="col">Method</th>
+                    <th scope="col">RaR-Medicine</th>
+                    <th scope="col">HealthBench</th>
+                    <th scope="col">RaR-Science</th>
+                    <th scope="col">ResearchQA</th>
+                    <th scope="col">Avg.</th>
+                  </tr>
+                </thead>
+                <tbody data-ru-book-body></tbody>
+              </table>
+            </div>
+            <p aria-live="polite" class="ru-book-note" data-ru-book-note></p>
+          </div>
+          <p class="ru-note">
+            Scores in percent; Medicine and Science use separate training runs. Main benchmarks are judged by
+            DeepSeek-V4.1-Flash on frozen responses. OPSD* (an external CriPO reference with a different judge and
+            filtered splits) is excluded from this matched comparison.
+          </p>
+
+          <div class="ru-tables3">
+            <div>
+              <p class="ru-tcap">Ablations · 4B, Medicine avg.</p>
+              <table class="ru-table ru-small-table">
+                <tbody>
+                  <tr><th scope="row">RuACT</th><td class="best">48.23</td></tr>
+                  <tr><th scope="row">RuACT-Critic</th><td>47.14</td></tr>
+                  <tr><th scope="row">Critic, no filter</th><td>46.75</td></tr>
+                  <tr><th scope="row">RuACT-Teacher</th><td>46.86</td></tr>
+                  <tr><th scope="row">Teacher, no gate</th><td>46.32</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <p class="ru-tcap">Other optimizers · 4B, Medicine avg.</p>
+              <table class="ru-table ru-small-table">
+                <tbody>
+                  <tr><th scope="row">RuACT</th><td class="best">48.23</td></tr>
+                  <tr><th scope="row">DAPO-style</th><td>47.78</td></tr>
+                  <tr><th scope="row">GRPO+OPSD</th><td>47.11</td></tr>
+                  <tr><th scope="row">GRPO</th><td>45.59</td></tr>
+                  <tr><th scope="row">Base</th><td>42.92</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <p class="ru-tcap">General capability · Qwen3-Max judge</p>
+              <table class="ru-table ru-small-table">
+                <thead>
+                  <tr><th scope="col"></th><th scope="col">MT-B R1</th><th scope="col">FB HSR</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">1.7B Base</th><td>7.13</td><td>43.52</td></tr>
+                  <tr><th scope="row">1.7B RuACT</th><td class="best">7.66</td><td class="best">45.37</td></tr>
+                  <tr><th scope="row">4B Base</th><td>8.31</td><td>58.50</td></tr>
+                  <tr><th scope="row">4B RuACT</th><td class="best">8.64</td><td class="best">59.89</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="ru-note">
+            Neither Teacher nor Critic alone matches the combination; dynamic sampling and all-rubric distillation both
+            score lower; general abilities (MT-Bench, FollowBench) are preserved.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================== Analysis ============================== -->
+      <section class="ru-section" id="analysis">
+        <div class="ru-col">
+          <h2>Analysis</h2>
+          <h3>Recovering unreachable rubrics</h3>
+        </div>
+        <figure class="ru-plate reveal">
+          <img
+            alt="Paper Figure 4: recovery of initially unreachable rubrics during training, and recovery grouped by initial elicitation."
+            height="518"
+            loading="lazy"
+            src="assets/teacher_recovery.png"
+            width="930"
+          />
+          <figcaption>
+            <b>Figure 4.</b> Qwen3-4B on RaR-Medicine, a fixed cohort of 931 initially unreachable rubrics from 331
+            training queries. Recovery means at least one of eight unguided responses satisfies the rubric. At step 200,
+            RuACT-Teacher and RuACT improve on GRPO by 3.76 and 7.84 points.
+          </figcaption>
+        </figure>
+        <div class="ru-col">
+          <h3>Critic discrimination</h3>
+        </div>
+        <figure class="ru-plate reveal">
+          <img
+            alt="Paper Figure 5: within-group reward standard deviation with parent-only and child-refined rewards on independent rollouts."
+            height="499"
+            loading="lazy"
+            src="assets/critic_dispersion.png"
+            width="927"
+          />
+          <figcaption>
+            <b>Figure 5.</b> On responses sampled independently of those used to select child rubrics, refinement increases
+            within-group reward standard deviation by 11.34% for RuACT-Critic and 10.02% for RuACT.
+          </figcaption>
+        </figure>
+        <div class="ru-col">
+          <h3>Joint gains from Teacher and Critic</h3>
+        </div>
+        <figure class="ru-plate narrow reveal">
+          <img
+            alt="Paper Figure 6: unreachable-rate reduction versus child-rubric satisfaction gain relative to GRPO."
+            height="682"
+            loading="lazy"
+            src="assets/policy_gains.png"
+            width="927"
+          />
+          <figcaption>
+            <b>Figure 6.</b> Gains over GRPO: unreachable-rate reduction on 21,500 test query–rubric pairs (x) and
+            child-rubric satisfaction on 1,954 Base-saturated parents (y). RuACT has the largest unreachable-rate
+            reduction (1.93 points) while keeping a 2.73-point child-satisfaction gain.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ============================== Takeaways ============================== -->
+      <section class="ru-section" id="takeaways">
+        <div class="ru-col">
+          <h2>Takeaways</h2>
+          <ul class="ru-list">
+            <li><b>Inactive rubrics are the majority, not an edge case:</b> 60.88% of query–rubric observations in Qwen3-4B medical training give no group-relative signal.</li>
+            <li><b>The two inactive states need different supervision:</b> unreachable rubrics lack the behavior (guidance lifts it from 1.13% to 91.25%); saturated rubrics lack a distinction among responses that already pass.</li>
+            <li><b>Teach only with guidance that wins:</b> the reward gate keeps distillation honest; unguided recovery rises from 35.02% to 42.86%.</li>
+            <li><b>Criticism must agree with quality:</b> matched children raise alignment from 57.74% to 60.77%; shuffled children lower it to 53.62%.</li>
+            <li><b>Teacher and Critic are complementary:</b> combined RuACT reaches the best average at both scales (47.17% at 1.7B, 59.12% at 4B), with one policy and no rubric guidance at inference.</li>
+          </ul>
+
+          <h2 id="code">Quick start</h2>
+          <pre class="ru-pre" aria-label="Quick start commands"><code><span class="c"># install</span>
+git clone https://github.com/ZJU-REAL/RuACT.git
+cd RuACT &amp;&amp; pip install -e .
+
+<span class="c"># configure, dry-run, then train (Medicine, Qwen3-4B)</span>
+cp configs/local.example.json settings.local.json
+bash experiments/main/medicine/4b/RuACT.sh --settings settings.local.json --dry-run
+bash experiments/main/medicine/4b/RuACT.sh --settings settings.local.json</code></pre>
+          <p class="ru-note">
+            See the <a href="https://github.com/ZJU-REAL/RuACT#quick-start">README</a> and the
+            <a href="https://github.com/ZJU-REAL/RuACT/blob/main/docs/training.md">training guide</a> for data preparation,
+            configuration and evaluation.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================== BibTeX ============================== -->
+      <section class="ru-section" id="cite">
+        <div class="ru-col">
+          <div class="ru-cite-head">
+            <h2>BibTeX</h2>
+            <button class="ru-copy" data-copy="ru-bib" type="button">Copy BibTeX</button>
+          </div>
+          <pre class="ru-pre ru-bib" id="ru-bib"><code>@article{li2026ruact,
+  title   = {RuACT: Recovering Inactive Rubrics as Adaptive Critics and Teachers},
+  author  = {Li, Yijun and Lu, Zhengxi and Liu, Zhipiao and Yu, Jinzheng and Weng, Xutao and Shao, Jian and Shen, Yongliang},
+  journal = {arXiv preprint arXiv:2611.09597},
+  year    = {2026}
+}</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ru-footer">
+      <div class="ru-col">
+        <p>
+          Zhejiang University &amp; Huawei · Code released under Apache-2.0 ·
+          <a href="https://github.com/ZJU-REAL/RuACT">GitHub</a> · <a href="https://arxiv.org/abs/2611.09597">arXiv</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
