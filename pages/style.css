@@ -1316,3 +1316,14 @@ span.c {
     text-align: left;
   }
 }
+
+/* ------------------------------- Wordmark --------------------------------- */
+.ru-logo {
+  display: block;
+  width: min(72%, 330px);
+  height: auto;
+  margin: 0 auto 22px;
+}
+.ru-tagline {
+  display: block;
+}

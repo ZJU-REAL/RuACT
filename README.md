@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="assets/hero.png" alt="RuACT: a Student robot writes its answers under a rubric chart with two faded lines; the Teacher, the same robot with a book, guides it with a lightbulb hint so the line nobody met gets a check, and the Critic, with a magnifier and red pen, evaluates more finely as one big tick resolves into finer marks" width="100%">
+  <img src="assets/hero.jpg" alt="RuACT: a Student robot writes its answers under a rubric chart with two faded lines; the Teacher, the same robot with a book, guides it with a lightbulb hint so the line nobody met gets a check, and the Critic, with a magnifier and red pen, evaluates more finely as one big tick resolves into finer marks" width="100%">
 </p>
 
 <p align="center">
