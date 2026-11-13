@@ -1,6 +1,11 @@
 <div align="center">
 
-# RuACT
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/title-dark.png">
+    <img src="assets/title.png" alt="RuACT" width="320">
+  </picture>
+</h1>
 
 ### Recovering Inactive Rubrics as Adaptive Critics and Teachers
 
